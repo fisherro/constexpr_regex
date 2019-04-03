@@ -1,7 +1,7 @@
 /*
  * This code starts with Rob Pike's regex code...
  * https://www.cs.princeton.edu/courses/archive/spr09/cos333/beautiful.html
- * ...make it constexpr, and then tries to extend it.
+ * ...and make it constexpr.
  *
  * TODO:
  * Add +
@@ -10,6 +10,7 @@
  * Add character classes
  *  Can we replace the char of match_star with a structure while remaining
  *  constexpr?
+ * Captures?
  *
  * Do a separate glob matcher?
  *  Explicitly matches the whole string
@@ -19,7 +20,7 @@
 
 #include <string_view>
 
-namespace crx {
+namespace cxrx {
     /*
      * Pattern language:
      * . matches any single character
@@ -99,27 +100,27 @@ int main()
 {
     using namespace std::literals;
 
-    static_assert(true == crx::match("a"sv, "a"sv));
-    static_assert(false == crx::match("a"sv, "b"sv));
-    static_assert(true == crx::match("abc"sv, "abc"sv));
-    static_assert(false == crx::match("abc"sv, "xbc"sv));
-    static_assert(false == crx::match("abc"sv, "axc"sv));
-    static_assert(false == crx::match("abc"sv, "abx"sv));
+    static_assert(true == cxrx::match("a"sv, "a"sv));
+    static_assert(false == cxrx::match("a"sv, "b"sv));
+    static_assert(true == cxrx::match("abc"sv, "abc"sv));
+    static_assert(false == cxrx::match("abc"sv, "xbc"sv));
+    static_assert(false == cxrx::match("abc"sv, "axc"sv));
+    static_assert(false == cxrx::match("abc"sv, "abx"sv));
 
-    static_assert(true == crx::match("."sv, "a"sv));
-    static_assert(true == crx::match("."sv, "abc"sv));
-    static_assert(true == crx::match("..."sv, "abc"sv));
-    static_assert(false == crx::match("..."sv, "a"sv));
+    static_assert(true == cxrx::match("."sv, "a"sv));
+    static_assert(true == cxrx::match("."sv, "abc"sv));
+    static_assert(true == cxrx::match("..."sv, "abc"sv));
+    static_assert(false == cxrx::match("..."sv, "a"sv));
 
-    static_assert(true == crx::match("(.*)"sv, "(abc)"sv));
-    static_assert(false == crx::match("(.*)"sv, "abc"sv));
+    static_assert(true == cxrx::match("(.*)"sv, "(abc)"sv));
+    static_assert(false == cxrx::match("(.*)"sv, "abc"sv));
 
-    static_assert(true == crx::match("bcd"sv, "abcde"sv));
-    static_assert(false == crx::match("^bcd$"sv, "abcde"sv));
-    static_assert(true == crx::match("^bcd$"sv, "bcd"sv));
-    static_assert(false == crx::match("^bcd"sv, "abcde"sv));
-    static_assert(false == crx::match("bcd$"sv, "abcde"sv));
-    static_assert(true == crx::match("^bcd"sv, "bcde"sv));
-    static_assert(true == crx::match("bcd$"sv, "abcd"sv));
+    static_assert(true == cxrx::match("bcd"sv, "abcde"sv));
+    static_assert(false == cxrx::match("^bcd$"sv, "abcde"sv));
+    static_assert(true == cxrx::match("^bcd$"sv, "bcd"sv));
+    static_assert(false == cxrx::match("^bcd"sv, "abcde"sv));
+    static_assert(false == cxrx::match("bcd$"sv, "abcde"sv));
+    static_assert(true == cxrx::match("^bcd"sv, "bcde"sv));
+    static_assert(true == cxrx::match("bcd$"sv, "abcd"sv));
 }
 
